@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritting equation</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.4.2.min.js" type="text/javascript"></script>
+</head>
+<style>
+    * {
+        overflow: hidden;
+    }
+    
+    body {
+        text-align: center;
+    }
+    
+    h1 {
+        color: green;
+    }
+    
+    #url {
+        font-size: 16px;
+    }
+    
+    #canvas {
+        border: 1px solid;
+    }
+</style>
+
+<body>
+    <h1>HandWriten Equation Recognizer</h1>
+    <button id='btn'>Send</button>
+    <b>Draw anything you want</b>
+    <p id='url'>fS</p>
+    <button id="pen">Pen</button>
+    <button id="eraser">Eraser</button>
+    <hr>
+    <canvas id="canvas"></canvas>
+    <script src="{% static 'js/index.js' %}"></script>
+</body>
+
+</html>
