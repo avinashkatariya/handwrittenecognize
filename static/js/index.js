@@ -95,7 +95,7 @@ function sketch(event) {
 
     if (mode == "pen") {
 
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 2;
         // Sets the end of the lines drawn 
         // to a round shape. 
         ctx.lineCap = 'round';
