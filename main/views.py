@@ -12,6 +12,7 @@ import random
 import os
 from Latex.Latex import Latex
 import tensorflow as tf
+from pylatexenc.latex2text import LatexNodes2Text
 import tensorflow.contrib.legacy_seq2seq as seq2seq
 
 
@@ -21,6 +22,11 @@ loaded_model_json = json_file.read()
 json_file.close()
 loaded_model = model_from_json(loaded_model_json)
 loaded_model.load_weights("model1.h5")
+
+mean_train = np.load("train_images_mean.npy")
+std_train = np.load("train_images_std.npy")
+
+model2 = Latex("model", mean_train, std_train, plotting=False)
 labels = ['!', '(', ')', '+', ',', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '=', 'A', 'alpha', 'ascii_124', 'b', 'beta', 'C', 'cos', 'd', 'Delta', 'div', 'e', 'exists', 'f', 'forall', 'forward_slash', 'G', 'gamma', 'geq', 'gt', 'H', 'i', 'in', 'infty', 'int', 'j', 'k', 'l', 'lambda', 'ldots', 'leq', 'lim', 'log', 'lt', 'M', 'mu', 'N', 'neq', 'o', 'p', 'phi', 'pi', 'pm', 'prime', 'q', 'R', 'rightarrow', 'S', 'sigma', 'sin', 'sqrt', 'sum', 'T', 'tan', 'theta', 'times', 'u', 'v', 'w', 'X', 'y', 'z', '[', ']', '{', '}']
 
 
@@ -44,11 +50,11 @@ def handle_uploaded_file(f):
             destination.write(chunk)
     
     formula = io.imread(res+'.jpg')
-    latex = model.predict(formula)
+    latex = model2.predict(formula)
 
    
     return Response({
-        "eqn":latex
+        "eqn":LatexNodes2Text().latex_to_text(latex.replace("#",""))
     })
     
 
