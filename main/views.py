@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import cv2 
 import matplotlib.pyplot as plt
-from keras.models import model_from_json
+#from keras.models import model_from_json
 import numpy as np
 import urllib
 import string 
@@ -16,12 +16,13 @@ from pylatexenc.latex2text import LatexNodes2Text
 import tensorflow.contrib.legacy_seq2seq as seq2seq
 
 
-
+"""
 json_file = open('model1.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 loaded_model = model_from_json(loaded_model_json)
 loaded_model.load_weights("model1.h5")
+"""
 
 mean_train = np.load("train_images_mean.npy")
 std_train = np.load("train_images_std.npy")
