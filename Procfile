@@ -1,1 +1,1 @@
-worker:
+web: gunicorn bootcamp.wsgi
