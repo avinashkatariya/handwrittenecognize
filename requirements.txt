@@ -13,4 +13,3 @@ scipy==1.4.1
 sklearn==0.0
 tensorflow==1.2.0
 pylatexenc
-skimage
