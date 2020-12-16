@@ -10,6 +10,7 @@ import urllib
 import string 
 import random 
 import os
+from skimage import io
 from Latex.Latex import Latex
 import tensorflow as tf
 from pylatexenc.latex2text import LatexNodes2Text
