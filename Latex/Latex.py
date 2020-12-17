@@ -32,7 +32,7 @@ class Latex(object):
         self.label_names = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '+', '=', 'leq', 'neq', 'geq', 'alpha',
                             'beta', 'lambda', 'lt', 'gt', 'x', 'y']
         self.ltokens = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '+', '=', '#leq', '#neq', '#geq', '#alpha',
-                            '#beta', '#lambda', '#lt', '#gt', 'x', 'y', '^', '#frac', '{', '}' ,' ']
+                            '#beta', '#lambda', '#lt', '#gt', 'x', 'y', '^', r'/frac', '{', '}' ,' ']
         self.nof_labels = len(self.label_names)
         self.labels_dict = dict()
         i = 0

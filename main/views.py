@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponsePermanentRedirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.parsers import FileUploadParser
+from rest_framework.views import APIView
+from rest_framework import status
+from .serializer import FileSerializer
 import cv2 
 #from keras.models import model_from_json
 import numpy as np
@@ -14,6 +18,9 @@ from Latex.Latex import Latex
 import tensorflow as tf
 from pylatexenc.latex2text import LatexNodes2Text
 import tensorflow.contrib.legacy_seq2seq as seq2seq
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
 
 
 
@@ -38,6 +45,29 @@ def EquationImage(request):
     return render(request,'index2.html')
 
 @api_view(['POST'])
+def test(request):
+    print("hello")
+    return Response({""})
+
+
+class FileUploadView(APIView):
+    authentication_classes = []
+    parser_class = (FileUploadParser,)
+
+
+    def get(self, request, *args, **kwargs):
+        print("vj")
+
+        file_serializer = FileSerializer(data=request.data)
+
+        if file_serializer.is_valid():
+            file_serializer.save()
+
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+
+@api_view(['POST'])
 def DetectI(request):
     if request.method == 'POST':
         return handle_uploaded_file(request.FILES['file'])
@@ -53,9 +83,12 @@ def handle_uploaded_file(f):
     formula = io.imread(res+'.jpg')
     latex = model2.predict(formula)
 
+    eqn = latex['equation'].replace("#frac{","").replace("}{","/").replace("}","").replace(" #leq ","lt")
+    print(eqn)
+    
     
     return Response({
-        "eqn":latex['equation']
+        "eqn":eqn,  
     })
     
 
@@ -72,6 +105,7 @@ def Detect(request):
 
         img = cv2.imread(resp[0])
         img = ~img
+        img = cv2.resize(img, (720,200), interpolation = cv2.INTER_AREA)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         cv2.imwrite("image.png",gray)
 
@@ -80,8 +114,11 @@ def Detect(request):
         latex = model2.predict(formula)
         print(latex['equation'])
 
+        eqn = latex['equation'].replace("#frac{","").replace("}{","/").replace("}","").replace(" #leq ","lt")
+        print(eqn)
+
         return Response({
-            "char":str(latex['equation'])
+            "char":eqn
         })
 
     return Response({
@@ -93,3 +130,6 @@ def Blob(request,a):
 
 class CustomSchemeRedirect(HttpResponsePermanentRedirect):
     allowed_schemes = ['blob']
+
+
+
